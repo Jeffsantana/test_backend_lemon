@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import newModule from './modules/NewModule/routes/NewModuleRoutes';
+import newModule from './modules/Elegibilidade/routes/ElegibilidadeRoutes';
 
 const routes = Router();
 

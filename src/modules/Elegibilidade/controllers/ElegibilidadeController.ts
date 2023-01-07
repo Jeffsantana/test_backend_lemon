@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 
-import NewModuleRepository from '../repositories/NewModuleRepository';
+import ElegibilidadeRepository from '../repositories/ElegibilidadeRepository';
 
-class NewModuleController {
+class ElegibilidadeController {
   public async create(request: Request, response: Response): Promise<Response> {
     try {
       const {
@@ -11,11 +11,11 @@ class NewModuleController {
         isActive,
       } = request.body;
 
-      const newModuleRepository = getCustomRepository(NewModuleRepository);
+      const elegibilidadeRepository = getCustomRepository(ElegibilidadeRepository);
 
-      const newModuleExists = await newModuleRepository.findByName(name);
+      const elegibilidadeExists = await elegibilidadeRepository.findByName(name);
 
-      if (newModuleExists) {
+      if (elegibilidadeExists) {
         return response.status(400).json({
           success: false,
           message: 'Esse nome já está cadastrado',
@@ -23,7 +23,7 @@ class NewModuleController {
         });
       }
 
-      await newModuleRepository
+      await elegibilidadeRepository
         .createIfNotExist(
           name,
           isActive,
@@ -48,13 +48,13 @@ class NewModuleController {
 
   public async list(request: Request, response: Response): Promise<Response> {
     try {
-      const newModuleRepository = getCustomRepository(NewModuleRepository);
+      const elegibilidadeRepository = getCustomRepository(ElegibilidadeRepository);
 
-      const newModules = await newModuleRepository.findAll();
+      const elegibilidades = await elegibilidadeRepository.findAll();
 
       const json = {
         success: true,
-        data: newModules,
+        data: elegibilidades,
         message: null,
       };
 
@@ -77,11 +77,11 @@ class NewModuleController {
       } = request.body;
 
       const { id } = request.params;
-      const newModuleRepository = getCustomRepository(NewModuleRepository);
+      const elegibilidadeRepository = getCustomRepository(ElegibilidadeRepository);
 
-      const newModule = await newModuleRepository.findById(id);
+      const elegibilidade = await elegibilidadeRepository.findById(id);
 
-      if (!newModule) {
+      if (!elegibilidade) {
         return response.status(400).json({
           success: false,
           message: 'Resource not found',
@@ -89,10 +89,10 @@ class NewModuleController {
         });
       }
 
-      if (name && name !== newModule.name) {
-        const newModuleExists = await newModuleRepository.findByName(name);
+      if (name && name !== elegibilidade.name) {
+        const elegibilidadeExists = await elegibilidadeRepository.findByName(name);
 
-        if (newModuleExists) {
+        if (elegibilidadeExists) {
           return response.status(400).json({
             success: false,
             message: 'Esse nome já está cadastrado',
@@ -102,8 +102,8 @@ class NewModuleController {
       }
 
 
-      const updated = await newModuleRepository
-        .updateNewModule(id, { name, isActive });
+      const updated = await elegibilidadeRepository
+        .updateElegibilidade(id, { name, isActive });
 
       const json = {
         success: true,
@@ -123,4 +123,4 @@ class NewModuleController {
   }
 }
 
-export default new NewModuleController();
+export default new ElegibilidadeController();

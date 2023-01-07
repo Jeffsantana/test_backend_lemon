@@ -12,7 +12,7 @@
     "migrate": "yarn typeorm migration:run"
   },
   "author": "santanaJeff'",
-  "license": "private",
+  "license": "mit",
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
@@ -24,6 +24,7 @@
     "@types/axios": "^0.14.0",
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.13",
+    "@types/jest": "^29.2.5",
     "@types/morgan": "^1.9.1",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.11.6",
@@ -52,6 +53,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^4.1.0",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
     "joi": "^17.2.1",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.5",
