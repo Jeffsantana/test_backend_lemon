@@ -20,7 +20,23 @@ const classesDeConsumo = [
   'poderPublico',
 ]
 
-const modalidadesTarifarias = ['azul', 'branca', 'verde', 'convencional']
+const classesDeConsumoElegiveis = [
+  'residencial',
+  'industrial',
+  'comercial'
+];
+
+const modalidadesTarifarias = [
+  'azul',
+  'branca',
+  'verde',
+  'convencional'
+];
+
+const modalidadesTarifariasElegiveis = [
+  'branca',
+  'convencional'
+];
 
 module.exports = {
   cpf,
@@ -28,4 +44,6 @@ module.exports = {
   tiposDeConexao,
   classesDeConsumo,
   modalidadesTarifarias,
+  classesDeConsumoElegiveis,
+  modalidadesTarifariasElegiveis
 }

@@ -11,9 +11,11 @@ describe('Testar elegibilidade de possiveis clientes', () => {
       const response = ElegibilidadeService(test)
       expect(response).not.toBeNull();
       if (response.elegivel) {
+        console.log("🚀 Cliente", test.numeroDoDocumento, "é elegivel")
         expect(response.economiaAnualDeCO2).not.toBeNull();
         expect(response.economiaAnualDeCO2).not.toBeNull();
       } else {
+        console.log("🚀 Cliente", test.numeroDoDocumento, "NÃO é elegivel")
         expect(response.razoesDeInelegibilidade).not.toBeNull();
 
       }
