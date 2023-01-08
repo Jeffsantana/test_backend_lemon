@@ -8,7 +8,8 @@ describe('Testar elegibilidade de possiveis clientes', () => {
   it('Testando input via arquivo de teste', () => {
 
     toTest.forEach(test => {
-      const response = ElegibilidadeService(test)
+      const elegibilidadeService = new ElegibilidadeService()
+      const response = elegibilidadeService.execute(test)
       expect(response).not.toBeNull();
       if (response.elegivel) {
         console.log("🚀 Cliente", test.numeroDoDocumento, "é elegivel")

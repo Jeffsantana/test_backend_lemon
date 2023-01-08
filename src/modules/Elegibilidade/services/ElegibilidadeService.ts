@@ -1,4 +1,5 @@
 
+import e from 'cors';
 import { cpf, cnpj, classesDeConsumoElegiveis, modalidadesTarifariasElegiveis, minimoPorTipoDeConexao, tiposDeConexao } from './tipos'
 interface IVerificarElegibilidade {
   numeroDoDocumento: string;
@@ -34,44 +35,62 @@ const buildPatternToType = (types: string[]): string => {
   return result.slice(0, result.length - 1)
 }
 
-const ElegibilidadeService = (toElegibilidade: IVerificarElegibilidade): ISaidaElegibilidade => {
-  const {
-    numeroDoDocumento,
-    tipoDeConexao,
-    classeDeConsumo,
-    modalidadeTarifaria,
-    historicoDeConsumo
-  } = toElegibilidade
+class ElegibilidadeService {
+  execute(toElegibilidade: IVerificarElegibilidade): ISaidaElegibilidade {
+    const {
+      numeroDoDocumento,
+      tipoDeConexao,
+      classeDeConsumo,
+      modalidadeTarifaria,
+      historicoDeConsumo
+    } = toElegibilidade
+
+    const verificarInput = [];
+    if (!classeDeConsumo.match(new RegExp(buildPatternToType(classesDeConsumoElegiveis), 'gi'))) {
+      verificarInput.push("Classe de consumo não aceita")
+    }
+
+    if (!modalidadeTarifaria.match(new RegExp(buildPatternToType(modalidadesTarifariasElegiveis), 'gi'))) {
+      verificarInput.push("Modalidade tarifária não aceita")
+    }
+
+    // Não foi verificado adequadamente os seguintes inputs 
+    // >>> tipo de conexão 
+    // >>> numero Do Documento
+    // por que não foi encontrado essa possibilidade na especificação de saída
+    if (!numeroDoDocumento.match(new RegExp(buildPatternToType(tiposDeConexao), 'gi'))) {
+      verificarInput.push("Tipo de conexão incorreto")
+    }
+
+    if (!numeroDoDocumento.match(new RegExp(cpf.pattern.toString(), 'gi')) || !numeroDoDocumento.match(new RegExp(cnpj.pattern, 'gi'))) {
+      verificarInput.push("Número de Documento incorrento")
+    }
 
 
-  if (!classeDeConsumo.match(new RegExp(buildPatternToType(classesDeConsumoElegiveis), 'gi'))) {
-    naoElegivel.razoesDeInelegibilidade.push("Classe de consumo não aceita")
+    console.debug("🚀 ~ ElegibilidadeService ~ aoElegivel.razoesDeInelegibilidade", verificarInput.length)
+    let result;
+    if (verificarInput.length > 1) {
+
+      const naoElegivel = {
+        elegivel: false,
+        razoesDeInelegibilidade: verificarInput
+      }
+
+      result = naoElegivel
+
+    } else {
+      const elegivel = {
+        elegivel: true,
+        economiaAnualDeCO2: 0
+      }
+
+      result = elegivel;
+
+    }
+
+    console.debug("🚀 ~ ElegibilidadeService ~ result", result)
+
+    return result
   }
-
-  if (!modalidadeTarifaria.match(new RegExp(buildPatternToType(modalidadesTarifariasElegiveis), 'gi'))) {
-    naoElegivel.razoesDeInelegibilidade.push("Modalidade tarifária não aceita")
-  }
-
-  // Não foi verificado adequadamente os seguintes inputs 
-  // >>> tipo de conexão 
-  // >>> numero Do Documento
-  // por que não foi encontrado essa possibilidade na especificação de saída
-  if (!numeroDoDocumento.match(new RegExp(buildPatternToType(tiposDeConexao), 'gi'))) {
-    naoElegivel.razoesDeInelegibilidade.push("Tipo de conexão incorreto")
-  }
-
-  if (!numeroDoDocumento.match(new RegExp(cpf.pattern.toString(), 'gi')) || !numeroDoDocumento.match(new RegExp(cnpj.pattern, 'gi'))) {
-    naoElegivel.razoesDeInelegibilidade.push("Número de Documento incorrento")
-  }
-
-
-  console.debug("🚀 ~ ElegibilidadeService ~ aoElegivel.razoesDeInelegibilidade", naoElegivel.razoesDeInelegibilidade.length)
-  const result =
-    naoElegivel.razoesDeInelegibilidade.length > 1
-      ? naoElegivel
-      : elegivel
-  console.debug("🚀 ~ ElegibilidadeService ~ result", result)
-
-  return result
 }
 export default ElegibilidadeService;
