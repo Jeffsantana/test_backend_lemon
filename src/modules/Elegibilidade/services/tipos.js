@@ -10,7 +10,21 @@ const cnpj = {
   example: '33400689000109',
 }
 
-const tiposDeConexao = ['monofasico', 'bifasico', 'trifasico']
+const tiposDeConexao = ['monofasico', 'bifasico', 'trifasico'];
+const minimoPorTipoDeConexao = [
+  {
+    tipo: 'monofasico',
+    minimo: 400
+  },
+  {
+    tipo: 'bifasico',
+    minimo: 500
+  },
+  {
+    tipo: 'trifasico',
+    minimo: 750
+  }
+];
 
 const classesDeConsumo = [
   'residencial',
@@ -45,5 +59,6 @@ module.exports = {
   classesDeConsumo,
   modalidadesTarifarias,
   classesDeConsumoElegiveis,
-  modalidadesTarifariasElegiveis
+  modalidadesTarifariasElegiveis,
+  minimoPorTipoDeConexao
 }

@@ -16,6 +16,7 @@ describe('Testar elegibilidade de possiveis clientes', () => {
         expect(response.economiaAnualDeCO2).not.toBeNull();
       } else {
         console.log("🚀 Cliente", test.numeroDoDocumento, "NÃO é elegivel")
+        console.debug("🚀 ~ it ~ response.razoesDeInelegibilidade", response.razoesDeInelegibilidade)
         expect(response.razoesDeInelegibilidade).not.toBeNull();
 
       }

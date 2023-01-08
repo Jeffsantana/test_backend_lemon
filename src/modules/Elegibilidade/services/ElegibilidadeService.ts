@@ -1,5 +1,5 @@
 
-import { classesDeConsumoElegiveis, modalidadesTarifariasElegiveis } from './tipos'
+import { cpf, cnpj, classesDeConsumoElegiveis, modalidadesTarifariasElegiveis, minimoPorTipoDeConexao, tiposDeConexao } from './tipos'
 interface IVerificarElegibilidade {
   numeroDoDocumento: string;
   tipoDeConexao: string;
@@ -43,16 +43,34 @@ const ElegibilidadeService = (toElegibilidade: IVerificarElegibilidade): ISaidaE
     historicoDeConsumo
   } = toElegibilidade
 
-  const verificarClasseEModalidade =
-    classeDeConsumo.match(new RegExp(buildPatternToType(classesDeConsumoElegiveis), 'gi'))
-      && modalidadeTarifaria.match(new RegExp(buildPatternToType(modalidadesTarifariasElegiveis), 'gi'))
-      ? true
-      : false
 
+  if (!classeDeConsumo.match(new RegExp(buildPatternToType(classesDeConsumoElegiveis), 'gi'))) {
+    naoElegivel.razoesDeInelegibilidade.push("Classe de consumo não aceita")
+  }
+
+  if (!modalidadeTarifaria.match(new RegExp(buildPatternToType(modalidadesTarifariasElegiveis), 'gi'))) {
+    naoElegivel.razoesDeInelegibilidade.push("Modalidade tarifária não aceita")
+  }
+
+  // Não foi verificado adequadamente os seguintes inputs 
+  // >>> tipo de conexão 
+  // >>> numero Do Documento
+  // por que não foi encontrado essa possibilidade na especificação de saída
+  if (!numeroDoDocumento.match(new RegExp(buildPatternToType(tiposDeConexao), 'gi'))) {
+    naoElegivel.razoesDeInelegibilidade.push("Tipo de conexão incorreto")
+  }
+
+  if (!numeroDoDocumento.match(new RegExp(cpf.pattern.toString(), 'gi')) || !numeroDoDocumento.match(new RegExp(cnpj.pattern, 'gi'))) {
+    naoElegivel.razoesDeInelegibilidade.push("Número de Documento incorrento")
+  }
+
+
+  console.debug("🚀 ~ ElegibilidadeService ~ aoElegivel.razoesDeInelegibilidade", naoElegivel.razoesDeInelegibilidade.length)
   const result =
-    verificarClasseEModalidade
-      ? elegivel
-      : naoElegivel
+    naoElegivel.razoesDeInelegibilidade.length > 1
+      ? naoElegivel
+      : elegivel
+  console.debug("🚀 ~ ElegibilidadeService ~ result", result)
 
   return result
 }
