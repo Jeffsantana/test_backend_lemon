@@ -1,3 +1,24 @@
+# Teste - Backend Lemon - Elegibilidade
+As regras para resolução deste teste foram encontradas em: https://lemonenergy.notion.site/Teste-Backend-Lemon-Elegibilidade-9958a9678c0d4ac99185850fdb9716fc
+
+Utilizei um template próprio para a resolução deste deste teste, para execução, basta: 
+Clonar o repositório
+```bash
+git clone https://github.com/....
+```
+Instalar as dependências através do comando yarn
+
+```bash
+yarn
+```
+Rodar os testes com o arquivo de testes pré-definido
+```bash
+yarn jest
+```
+Para substituir os dados de teste basta alterar o arquivo: src/inputToTest/inputElegibilidadeTest.json
+
+
+
 # api_node_typescript_typeorm_template
 
 API Template for new service using node + typescript + typeorm
@@ -34,7 +55,7 @@ yarn
 yarn dev
 ```
 
-Now, you can see the app running at [localhost:4600](http://localhost:4700)
+Now, you can see the app running at [localhost:4600](http://localhost:4600)
 
 ## Running the project
 
