@@ -11,9 +11,9 @@ const input = {
   additionalProperties: false,
   required: [
     'numeroDoDocumento',
-    'tipoDeConexao',
-    'classeDeConsumo',
-    'modalidadeTarifaria',
+    'tipoDeConexao', //ok
+    'classeDeConsumo', //ok
+    'modalidadeTarifaria', //ok
     'historicoDeConsumo',
   ],
   properties: {

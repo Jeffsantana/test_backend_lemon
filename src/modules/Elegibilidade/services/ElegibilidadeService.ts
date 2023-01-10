@@ -1,5 +1,4 @@
 
-import e from 'cors';
 import { cpf, cnpj, classesDeConsumoElegiveis, modalidadesTarifariasElegiveis, minimoPorTipoDeConexao, tiposDeConexao } from './tipos'
 interface IVerificarElegibilidade {
   numeroDoDocumento: string;
@@ -16,32 +15,46 @@ interface ISaidaElegibilidade {
 
 }
 
-const elegivel = {
-  elegivel: true,
-  economiaAnualDeCO2: 0
-}
-
-const naoElegivel = {
-  elegivel: false,
-  razoesDeInelegibilidade: []
-}
-
 const buildPatternToType = (types: string[]): string => {
+
   const data = types.map(type => {
     return type.replace(`${type.toString()}`, `(${type.toString()})|`)
   })
 
   const result = data.toString().replaceAll(',', '')
   return result.slice(0, result.length - 1)
+
 }
 
+const calcSomaDeConsumo = (historicoDeConsumo: number[]): number => {
+
+  return historicoDeConsumo.reduce((previous, current) => previous + current, 0);
+
+}
+
+const verificarConsumoMinimo = (historicoDeConsumo: number[], tipoDeConexao: string): boolean => {
+  if (historicoDeConsumo.length >= 3) {
+    const mediaDeConsumo = (calcSomaDeConsumo(historicoDeConsumo) / historicoDeConsumo.length) || 0
+    return minimoPorTipoDeConexao.some(item => {
+      item.tipo === tipoDeConexao && item.minimo <= mediaDeConsumo
+    })
+  } else {
+    console.debug("🚀 ~ verificarConsumoMinimo ~ historicoDeConsumo.length", historicoDeConsumo.length)
+    return true
+  }
+
+}
+
+const calcEconomiaCO2 = (historicoDeConsumo: number[]): number => {
+  return Math.floor(calcSomaDeConsumo(historicoDeConsumo) * 1000 / 84)
+}
 class ElegibilidadeService {
   execute(toElegibilidade: IVerificarElegibilidade): ISaidaElegibilidade {
     const {
-      numeroDoDocumento,
-      tipoDeConexao,
-      classeDeConsumo,
-      modalidadeTarifaria,
+      numeroDoDocumento, //ok
+      tipoDeConexao, //ok
+      classeDeConsumo, // ok
+      modalidadeTarifaria, //ok
       historicoDeConsumo
     } = toElegibilidade
 
@@ -54,43 +67,43 @@ class ElegibilidadeService {
       verificarInput.push("Modalidade tarifária não aceita")
     }
 
-    // Não foi verificado adequadamente os seguintes inputs 
+    // Na especificação de entrada diz que o mínimo de historicoDeConsumo são 3 contas, 
+    // logo se inserido apenas duas, retornamos  como Consumo muito baixo para tipo de conexão
+    if (verificarConsumoMinimo(historicoDeConsumo, tipoDeConexao)) {
+      verificarInput.push("Consumo muito baixo para tipo de conexão")
+    }
+
+    // Não foi verificado os seguintes inputs 
     // >>> tipo de conexão 
     // >>> numero Do Documento
     // por que não foi encontrado essa possibilidade na especificação de saída
-    if (!numeroDoDocumento.match(new RegExp(buildPatternToType(tiposDeConexao), 'gi'))) {
-      verificarInput.push("Tipo de conexão incorreto")
-    }
+    // if (!tipoDeConexao.match(new RegExp(buildPatternToType(tiposDeConexao), 'gi'))) {
+    //   verificarInput.push("Tipo de conexão incorreto")
+    // }
 
-    if (!numeroDoDocumento.match(new RegExp(cpf.pattern.toString(), 'gi')) || !numeroDoDocumento.match(new RegExp(cnpj.pattern, 'gi'))) {
-      verificarInput.push("Número de Documento incorrento")
-    }
+    // if (!(
+    //   numeroDoDocumento.match(new RegExp(cpf.pattern.toString(), 'gi'))
+    //   ||
+    //   numeroDoDocumento.match(new RegExp(cnpj.pattern, 'gi'))
+    // )) {
+    //   verificarInput.push("Número de Documento incorrento")
+    // }
 
+    if (verificarInput.length > 0) {
 
-    console.debug("🚀 ~ ElegibilidadeService ~ aoElegivel.razoesDeInelegibilidade", verificarInput.length)
-    let result;
-    if (verificarInput.length > 1) {
-
-      const naoElegivel = {
+      return {
         elegivel: false,
         razoesDeInelegibilidade: verificarInput
       }
 
-      result = naoElegivel
-
     } else {
-      const elegivel = {
+      return {
         elegivel: true,
-        economiaAnualDeCO2: 0
+        economiaAnualDeCO2: calcEconomiaCO2(historicoDeConsumo)
       }
-
-      result = elegivel;
 
     }
 
-    console.debug("🚀 ~ ElegibilidadeService ~ result", result)
-
-    return result
   }
 }
 export default ElegibilidadeService;

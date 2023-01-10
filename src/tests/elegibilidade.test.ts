@@ -11,17 +11,18 @@ describe('Testar elegibilidade de possiveis clientes', () => {
       const elegibilidadeService = new ElegibilidadeService()
       const response = elegibilidadeService.execute(test)
       expect(response).not.toBeNull();
+      expect(response.elegivel).not.toBeUndefined();
       if (response.elegivel) {
-        console.log("🚀 Cliente", test.numeroDoDocumento, "é elegivel")
         expect(response.economiaAnualDeCO2).not.toBeNull();
-        expect(response.economiaAnualDeCO2).not.toBeNull();
+        expect(response.economiaAnualDeCO2).not.toBeUndefined();
+        console.log("🚀 Cliente", test.numeroDoDocumento, "é elegivel", response)
       } else {
-        console.log("🚀 Cliente", test.numeroDoDocumento, "NÃO é elegivel")
-        console.debug("🚀 ~ it ~ response.razoesDeInelegibilidade", response.razoesDeInelegibilidade)
         expect(response.razoesDeInelegibilidade).not.toBeNull();
+        expect(response.razoesDeInelegibilidade).not.toBeUndefined();
+        expect(response.razoesDeInelegibilidade.length).toBeGreaterThanOrEqual(1);
+        console.warn("🚀 Cliente", test.numeroDoDocumento, "NÃO é elegivel, razoes De Inelegibilidade", response.razoesDeInelegibilidade)
 
       }
-      // expect(response.elegivel).toBeTruthy();
     });
   })
 
