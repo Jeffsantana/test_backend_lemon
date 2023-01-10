@@ -79,6 +79,26 @@
         3878,
         9760
       ]
+    },
+    {
+      "numeroDoDocumento": "47549021066",
+      "tipoDeConexao": "monofasico",
+      "classeDeConsumo": "comercial",
+      "modalidadeTarifaria": "convencional",
+      "historicoDeConsumo": [
+        399,
+        398,
+        400,
+        397,
+        401,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399,
+        399
+      ]
     }
   ]
 }

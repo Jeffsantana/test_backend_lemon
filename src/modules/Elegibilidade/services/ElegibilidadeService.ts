@@ -33,14 +33,12 @@ const calcSomaDeConsumo = (historicoDeConsumo: number[]): number => {
 }
 
 const verificarConsumoMinimo = (historicoDeConsumo: number[], tipoDeConexao: string): boolean => {
+
   if (historicoDeConsumo.length >= 3) {
     const mediaDeConsumo = (calcSomaDeConsumo(historicoDeConsumo) / historicoDeConsumo.length) || 0
-    return minimoPorTipoDeConexao.some(item => {
-      item.tipo === tipoDeConexao && item.minimo <= mediaDeConsumo
-    })
+    return minimoPorTipoDeConexao.some(item => (item.tipo === tipoDeConexao && mediaDeConsumo >= item.minimo))
   } else {
-    console.debug("🚀 ~ verificarConsumoMinimo ~ historicoDeConsumo.length", historicoDeConsumo.length)
-    return true
+    return false
   }
 
 }
@@ -55,7 +53,7 @@ class ElegibilidadeService {
       tipoDeConexao, //ok
       classeDeConsumo, // ok
       modalidadeTarifaria, //ok
-      historicoDeConsumo
+      historicoDeConsumo //ok
     } = toElegibilidade
 
     const verificarInput = [];
@@ -68,8 +66,8 @@ class ElegibilidadeService {
     }
 
     // Na especificação de entrada diz que o mínimo de historicoDeConsumo são 3 contas, 
-    // logo se inserido apenas duas, retornamos  como Consumo muito baixo para tipo de conexão
-    if (verificarConsumoMinimo(historicoDeConsumo, tipoDeConexao)) {
+    // logo se inserido menos que 3, classificamos como erro 'Consumo muito baixo para tipo de conexão'
+    if (!verificarConsumoMinimo(historicoDeConsumo, tipoDeConexao)) {
       verificarInput.push("Consumo muito baixo para tipo de conexão")
     }
 

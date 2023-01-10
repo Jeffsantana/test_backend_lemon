@@ -10,8 +10,11 @@ describe('Testar elegibilidade de possiveis clientes', () => {
     toTest.forEach(test => {
       const elegibilidadeService = new ElegibilidadeService()
       const response = elegibilidadeService.execute(test)
+
       expect(response).not.toBeNull();
       expect(response.elegivel).not.toBeUndefined();
+      expect(response.elegivel).not.toBeNull();
+
       if (response.elegivel) {
         expect(response.economiaAnualDeCO2).not.toBeNull();
         expect(response.economiaAnualDeCO2).not.toBeUndefined();
@@ -20,8 +23,7 @@ describe('Testar elegibilidade de possiveis clientes', () => {
         expect(response.razoesDeInelegibilidade).not.toBeNull();
         expect(response.razoesDeInelegibilidade).not.toBeUndefined();
         expect(response.razoesDeInelegibilidade.length).toBeGreaterThanOrEqual(1);
-        console.warn("🚀 Cliente", test.numeroDoDocumento, "NÃO é elegivel, razoes De Inelegibilidade", response.razoesDeInelegibilidade)
-
+        console.warn("Cliente", test.numeroDoDocumento, "NÃO é elegivel, razoes De Inelegibilidade", response.razoesDeInelegibilidade)
       }
     });
   })
