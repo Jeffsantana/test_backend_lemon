@@ -41,6 +41,26 @@
       ]
     },
     {
+      "numeroDoDocumento": "18305776509",
+      "tipoDeConexao": "bifasico",
+      "classeDeConsumo": "poderPublico",
+      "modalidadeTarifaria": "convencional",
+      "historicoDeConsumo": [
+        3878,
+        9760,
+        5976,
+        2797,
+        2481,
+        5731,
+        7538,
+        4392,
+        7859,
+        4160,
+        6941,
+        4597
+      ]
+    },
+    {
       "numeroDoDocumento": "32208173000132",
       "tipoDeConexao": "bifasico",
       "classeDeConsumo": "comercial",
@@ -98,6 +118,86 @@
         399,
         399,
         399
+      ]
+    },
+    {
+      "numeroDoDocumento": "58749021066",
+      "tipoDeConexao": "bifasico",
+      "classeDeConsumo": "comercial",
+      "modalidadeTarifaria": "convencional",
+      "historicoDeConsumo": [
+        499,
+        498,
+        400,
+        497,
+        401,
+        499,
+        499,
+        499,
+        499,
+        499,
+        499,
+        499
+      ]
+    },
+    {
+      "numeroDoDocumento": "69849021066",
+      "tipoDeConexao": "trifasico",
+      "classeDeConsumo": "comercial",
+      "modalidadeTarifaria": "convencional",
+      "historicoDeConsumo": [
+        499,
+        498,
+        400,
+        497,
+        401,
+        499,
+        499,
+        499,
+        499,
+        499,
+        499,
+        499
+      ]
+    },
+    {
+      "numeroDoDocumento": "25141737706",
+      "tipoDeConexao": "bifasico",
+      "classeDeConsumo": "comercial",
+      "modalidadeTarifaria": "azul",
+      "historicoDeConsumo": [
+        3878,
+        9760,
+        5976,
+        2797,
+        2481,
+        5731,
+        7538,
+        4392,
+        7859,
+        4160,
+        6941,
+        4597
+      ]
+    },
+    {
+      "numeroDoDocumento": "36241737706",
+      "tipoDeConexao": "bifasico",
+      "classeDeConsumo": "comercial",
+      "modalidadeTarifaria": "verde",
+      "historicoDeConsumo": [
+        3878,
+        9760,
+        5976,
+        2797,
+        2481,
+        5731,
+        7538,
+        4392,
+        7859,
+        4160,
+        6941,
+        4597
       ]
     }
   ]

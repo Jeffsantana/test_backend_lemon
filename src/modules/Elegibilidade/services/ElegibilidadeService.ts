@@ -95,6 +95,7 @@ class ElegibilidadeService {
       }
 
     } else {
+
       return {
         elegivel: true,
         economiaAnualDeCO2: calcEconomiaCO2(historicoDeConsumo)
