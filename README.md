@@ -4,7 +4,7 @@ As regras para resolução deste teste foram encontradas em: https://lemonenergy
 Utilizei um template próprio para a resolução deste deste teste, para execução, basta: 
 Clonar o repositório
 ```bash
-git clone https://github.com/....
+git clone https://github.com/Jeffsantana/test_backend_lemon
 ```
 Instalar as dependências através do comando yarn
 
@@ -17,8 +17,26 @@ yarn jest
 ```
 Para substituir os dados de teste basta alterar o arquivo: src/inputToTest/inputElegibilidadeTest.json
 
+O arquivo de teste é o src/tests/elegibilidade.test.ts
 
+O objetivo deste deste é avaliar o objeto de retorno do service, de maneira que o teste será positivo para os casos onde o processamento dos dados foi feito de maneira correta.
 
+É feito um console.log para exibir o input que é ELEGIVEL
+E um console.warn para exibir um input que NÃO É ELEGIVEL 
+
+O Principal arquivo que executas regras definidas é o : src/modules/Elegibilidade/services/ElegibilidadeService.ts
+Nele há alguns comentários sobre o código.
+
+Obrigado!
+
+.
+
+.
+
+.
+
+.
+OLD version:
 # api_node_typescript_typeorm_template
 
 API Template for new service using node + typescript + typeorm
