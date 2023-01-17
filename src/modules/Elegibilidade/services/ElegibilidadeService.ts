@@ -1,5 +1,7 @@
 
 import { cpf, cnpj, classesDeConsumoElegiveis, modalidadesTarifariasElegiveis, minimoPorTipoDeConexao, tiposDeConexao } from './tipos'
+import ValidateCNPJService from './ValidateCNPJService';
+import ValidateCPFService from './ValidateCPFService';
 interface IVerificarElegibilidade {
   numeroDoDocumento: string;
   tipoDeConexao: string;
@@ -44,7 +46,7 @@ const verificarConsumoMinimo = (historicoDeConsumo: number[], tipoDeConexao: str
 }
 
 const calcEconomiaCO2 = (historicoDeConsumo: number[]): number => {
-  return Math.floor(calcSomaDeConsumo(historicoDeConsumo) * 1000 / 84)
+  return (calcSomaDeConsumo(historicoDeConsumo) / 1000) * 84
 }
 class ElegibilidadeService {
   execute(toElegibilidade: IVerificarElegibilidade): ISaidaElegibilidade {
@@ -67,6 +69,7 @@ class ElegibilidadeService {
 
     // Na especificação de entrada diz que o mínimo de historicoDeConsumo são 3 contas, 
     // logo se inserido menos que 3, classificamos como erro 'Consumo muito baixo para tipo de conexão'
+
     if (!verificarConsumoMinimo(historicoDeConsumo, tipoDeConexao)) {
       verificarInput.push("Consumo muito baixo para tipo de conexão")
     }
@@ -75,9 +78,31 @@ class ElegibilidadeService {
     // >>> tipo de conexão 
     // >>> numero Do Documento
     // por que não foi encontrado essa possibilidade na especificação de saída
-    // if (!tipoDeConexao.match(new RegExp(buildPatternToType(tiposDeConexao), 'gi'))) {
-    //   verificarInput.push("Tipo de conexão incorreto")
+    if (!tipoDeConexao.match(new RegExp(buildPatternToType(tiposDeConexao), 'gi'))) {
+      verificarInput.push("Tipo de conexão incorreto")
+    }
+
+    // if (!(
+    //   ValidateCPFService.handle(numeroDoDocumento)
+    //   ||
+    //   ValidateCNPJService.handle(numeroDoDocumento)
+    // )) {
+    //   verificarInput.push("Número de Documento incorrento")
     // }
+
+    if (numeroDoDocumento.match(new RegExp(cpf.pattern.toString(), 'gi'))) {
+      if (!ValidateCPFService.handle(numeroDoDocumento)) {
+        console.debug("🚀 ~ ElegibilidadeService ~ execute ~ numeroDoDocumento", numeroDoDocumento)
+        verificarInput.push("Número de Documento incorrento")
+      }
+    }
+
+    if (numeroDoDocumento.match(new RegExp(cnpj.pattern, 'gi'))) {
+      console.debug("🚀 ~ ElegibilidadeService ~ execute ~ numeroDoDocumento", numeroDoDocumento)
+      if (!ValidateCNPJService.handle(numeroDoDocumento)) {
+        verificarInput.push("Número de Documento incorrento")
+      }
+    }
 
     // if (!(
     //   numeroDoDocumento.match(new RegExp(cpf.pattern.toString(), 'gi'))
