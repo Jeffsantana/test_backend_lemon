@@ -5,25 +5,26 @@ import ElegibilidadeService from '../modules/Elegibilidade/services/Elegibilidad
 
 describe('Testar elegibilidade de possiveis clientes', () => {
 
-  it('Testando input via arquivo de teste', () => {
+  describe('Testando input via arquivo de teste', () => {
 
-    toTest.forEach(test => {
+    it.each(toTest)('test', ({ input, output }) => {
       const elegibilidadeService = new ElegibilidadeService()
-      const response = elegibilidadeService.execute(test)
+      const response = elegibilidadeService.execute(input)
 
       expect(response).not.toBeNull();
       expect(response.elegivel).not.toBeUndefined();
       expect(response.elegivel).not.toBeNull();
 
-      if (response.elegivel) {
+      if (output.elegivel) {
         expect(response.economiaAnualDeCO2).not.toBeNull();
         expect(response.economiaAnualDeCO2).not.toBeUndefined();
-        console.log("🚀 Cliente", test.numeroDoDocumento, "é elegivel", response)
+        expect(response.economiaAnualDeCO2).toBe(output.economiaCo2);
+
       } else {
         expect(response.razoesDeInelegibilidade).not.toBeNull();
         expect(response.razoesDeInelegibilidade).not.toBeUndefined();
         expect(response.razoesDeInelegibilidade.length).toBeGreaterThanOrEqual(1);
-        console.warn("Cliente", test.numeroDoDocumento, "NÃO é elegivel, razoes De Inelegibilidade", response.razoesDeInelegibilidade)
+        expect(response.razoesDeInelegibilidade).toStrictEqual(output.razoesDeInelegibilidade);
       }
     });
   })

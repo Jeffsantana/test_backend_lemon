@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import 'reflect-metadata';
-import './database';
+// import './database';
 
 import app from './app';
 
